@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [],
+  "command": {
+    "init-project": {
+      "description": "Initialize project documentation through iterative Q&A",
+      "template": "{file:./.agents/phases/init-project.md}"
+    },
+    "plan-feature": {
+      "description": "Plan feature implementation with spec, tasks, and acceptance tests",
+      "template": "{file:./.agents/phases/plan-feature.md}"
+    },
+    "exec-feature": {
+      "description": "Implement feature following the plan until all tests pass",
+      "template": "{file:./.agents/phases/exec-feature.md}"
+    },
+    "embed-feature": {
+      "description": "Integrate verified feature into project docs and codebase",
+      "template": "{file:./.agents/phases/embed-feature.md}"
+    }
+  }
+}
