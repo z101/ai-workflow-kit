@@ -44,25 +44,109 @@ Copy these files/directories into your project:
 
 ## Usage
 
-### In Cursor
+In both Cursor and OpenCode, invoke phases via `/command-name` followed by arguments.
 
-Type `/` in Agent chat and select the phase:
+### 1. Initialize the project
 
-- `/init-project` -- start a new project
-- `/plan-feature` -- plan a feature
-- `/exec-feature` -- implement a planned feature
-- `/embed-feature` -- integrate a verified feature
+Provide an initial project description. The agent asks focused follow-up questions, then generates the PRD, project rules, and `AGENTS.md`.
 
-### In OpenCode
+```
+/init-project Real-time Kanban app for small teams with Slack integration and role-based access
+```
 
-Type `/` in the TUI and select the command:
+The agent will:
 
-- `/init-project` -- start a new project
-- `/plan-feature` -- plan a feature
-- `/exec-feature` -- implement a planned feature
-- `/embed-feature` -- integrate a verified feature
+- Ask 2-4 follow-up questions at a time (tech stack, auth, deployment, etc.)
+- Wait for your confirmation before generating documentation
+- Generate `docs/prd.md` with a feature table, `.agents/rules/`, and update `AGENTS.md`
+- Ask you to review and suggest the first feature to plan
 
-OpenCode also auto-discovers the skills via its `skill` tool.
+### 2. Plan a feature
+
+Pass a Feature ID from the PRD, or describe a new feature.
+
+```
+# Feature from PRD — uses the existing ID and PRD context
+/plan-feature user-auth
+
+# New feature with explicit ID
+/plan-feature realtime-notifications: push notifications when tasks change
+
+# Free-form description — agent proposes an ID and confirms before proceeding
+/plan-feature Add push notifications when tasks are updated
+
+# No argument — agent lists planned features from PRD and asks which to plan
+/plan-feature
+```
+
+The agent will:
+
+- Research the codebase for relevant files, patterns, and dependencies
+- Ask up to 5 clarifying questions if requirements are unclear
+- Create `docs/features/FEATURE-ID.md` (spec + context references + implementation plan)
+- Create acceptance tests in `tests/features/FEATURE-ID/` (immutable contract)
+- Update the PRD feature table
+
+### 3. Execute the feature
+
+Pass the Feature ID. Optionally add instructions to adjust execution.
+
+```
+# Standard execution
+/exec-feature user-auth
+
+# With additional instructions
+/exec-feature user-auth — start from task 3, data layer is done
+/exec-feature user-auth — use passport v0.7, ignore v0.6 references in the plan
+```
+
+The agent will:
+
+- Read the feature doc, acceptance tests, context references, and rules
+- Verify acceptance tests exist and fail (no implementation yet)
+- Implement task by task, running tests after each significant change
+- Self-review the code (plan conformance, data alignment, style consistency)
+- Report results and wait for your verification
+
+### 4. Embed the feature
+
+After you verify the implementation, integrate it into the project.
+
+```
+# Standard integration
+/embed-feature user-auth
+
+# With scope adjustments
+/embed-feature user-auth — skip e2e tests for now
+```
+
+The agent will:
+
+- Update `docs/features/FEATURE-ID.md` with what was actually built
+- Update `docs/prd.md` (mark feature as "integrated")
+- Create integration and E2E tests for cross-feature interactions
+- Run the full test suite, fix any regressions
+- Update rules if new patterns emerged
+- Suggest the next feature to plan
+
+### Full workflow example
+
+```
+/init-project Kanban board SaaS with team collaboration
+  → Q&A → generates PRD with features: user-auth, kanban-board, slack-integration
+
+/plan-feature user-auth
+  → creates docs/features/user-auth.md + acceptance tests
+
+/exec-feature user-auth
+  → implements until all tests pass → you verify
+
+/embed-feature user-auth
+  → integrates docs, runs cross-feature tests → suggests next feature
+
+/plan-feature kanban-board
+  → next cycle begins...
+```
 
 ## Project Structure
 

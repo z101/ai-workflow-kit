@@ -4,7 +4,16 @@ You are implementing a feature that has already been planned. Your goal is to wr
 
 ## Inputs
 
-- Feature ID or reference to the feature document
+- **Feature ID** (required) — the kebab-case identifier (e.g., `user-auth`) that resolves to:
+  - `docs/features/FEATURE-ID.md` — the feature specification and implementation plan
+  - `tests/features/FEATURE-ID/` — the acceptance tests
+- **Additional instructions** (optional) — the user may provide extra context after the Feature ID, for example:
+  - Starting point: "start from task 3, data layer is done"
+  - Overrides: "use v2 API instead of what the plan says"
+  - Constraints: "don't touch the database schema"
+  - These instructions take precedence over the implementation plan where they conflict. Note any such overrides in the report as deviations.
+- If no Feature ID is provided, list available feature documents from `docs/features/` and ask the user which one to execute
+- If the provided ID doesn't match any existing feature document, show available options and ask for clarification
 
 ## Step 1: Load Context
 
@@ -13,6 +22,7 @@ Read these files:
 1. `docs/features/FEATURE-ID.md` -- the feature specification and implementation plan
 2. All files in `tests/features/FEATURE-ID/` -- the acceptance tests (your contract)
 3. `.agents/rules/` -- relevant rule files for the feature's domain
+4. **Context References** from the feature doc -- read all files listed under "Mandatory Reading", review "Patterns to Follow" and "Anti-Patterns to Avoid" before writing any code
 
 You do NOT need to read the full `docs/prd.md` unless the feature doc references it for cross-cutting context.
 
@@ -31,8 +41,10 @@ Follow the implementation plan from the feature document. Work through tasks in 
 ### Implementation rules
 
 - Follow conventions from `.agents/rules/` and `AGENTS.md`
+- After each file change, verify syntax, imports, and types are correct before moving to the next task
 - Run acceptance tests after each significant change to track progress
-- You MAY create additional `*.test.*` files (without `.acceptance.` in the name) for unit testing implementation details
+- If you encounter issues not addressed in the plan, document them for the report rather than silently working around them
+- You MAY create additional `*.test.`* files (without `.acceptance.` in the name) for unit testing implementation details
 - You MUST NOT create, modify, or delete any `*.acceptance.test.*` file
 
 ### If an acceptance test seems wrong
@@ -60,7 +72,19 @@ When you believe the implementation is complete:
 2. If any test fails, fix the implementation (not the tests)
 3. Run all project-wide tests to check for regressions in other features
 
-## Step 5: Report for Verification
+## Step 5: Code Review
+
+After all tests pass, review the implementation before presenting it to the user. Check for issues that tests alone don't catch:
+
+- **Plan conformance**: verify the feature doc's specification and implementation plan were followed correctly, no requirements were missed or misinterpreted
+- **Bugs and logic errors**: look for obvious bugs, off-by-one errors, unhandled edge cases, missing error handling
+- **Data alignment**: check for mismatches between layers — snake_case vs camelCase, flat vs nested structures, inconsistent field names between API contracts, database schemas, and internal models
+- **Over-engineering**: identify unnecessary abstractions, premature generalizations, or files growing too large and needing extraction
+- **Style consistency**: flag syntax or patterns that don't match the rest of the codebase or the conventions in `.agents/rules/`
+
+Fix any issues found, then re-run the full test suite to confirm nothing broke.
+
+## Step 6: Report for Verification
 
 Present to the user:
 
@@ -74,7 +98,7 @@ The user will verify the implementation before proceeding to embed-feature.
 
 ## Constraints
 
-- `*.acceptance.test.*` files are READ-ONLY. Never modify or delete them.
+- `*.acceptance.test.`* files are READ-ONLY. Never modify or delete them.
 - Do not modify files outside the feature's scope without explicit user approval.
 - Do not modify other feature's test files.
 - Do not update `docs/prd.md` or `docs/features/FEATURE-ID.md` -- that happens in embed-feature.

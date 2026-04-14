@@ -4,11 +4,20 @@ You are integrating a user-verified feature implementation into the project. You
 
 ## Inputs
 
-- Feature ID or reference to the feature that was just implemented and verified by the user
+- **Feature ID** (required) — the kebab-case identifier (e.g., `user-auth`) that resolves to:
+  - `docs/features/FEATURE-ID.md` — the feature specification, plan, and implementation notes
+  - `tests/features/FEATURE-ID/` — the acceptance and implementation tests
+- **Additional instructions** (optional) — the user may provide extra context after the Feature ID, for example:
+  - Scope adjustments: "skip e2e tests for now"
+  - Integration notes: "also update the API docs in README"
+  - These instructions supplement the standard embed process. Note any scope changes in the summary.
+- If no Feature ID is provided, list feature documents from `docs/features/` with status "in progress" and ask the user which one to embed
+- If the provided ID doesn't match any existing feature document, show available options and ask for clarification
 
 ## Prerequisites
 
 Before proceeding, confirm with the user:
+
 - The exec-feature phase is complete
 - All acceptance tests pass
 - The user has verified the implementation
@@ -46,11 +55,13 @@ Update `docs/prd.md`:
 Identify how the new feature interacts with existing features and create appropriate tests:
 
 ### Cross-feature integration tests (`tests/integration/`)
+
 - Test interactions between the new feature and previously integrated features
 - Focus on data flow, shared state, and API contracts between features
-- Name tests descriptively (e.g., `auth-api-gateway.test.*`)
+- Name tests descriptively (e.g., `auth-api-gateway.test.`*)
 
 ### E2E tests (`tests/e2e/`)
+
 - If the feature affects user-facing journeys, create or update E2E tests
 - Cover the happy path and critical error paths that span multiple features
 
@@ -66,6 +77,7 @@ Run the complete test suite:
 4. All E2E tests (`tests/e2e/`)
 
 If any test fails:
+
 - Fix the code (not the tests) for implementation and integration issues
 - If an acceptance test from a DIFFERENT feature fails, investigate carefully -- this indicates a regression
 - Report any regressions to the user before fixing
@@ -92,8 +104,9 @@ Present to the user:
 
 Before finishing, verify:
 
-- [ ] `docs/features/FEATURE-ID.md` updated with implementation reality
-- [ ] `docs/prd.md` feature table updated (status: "integrated")
-- [ ] Integration tests created for cross-feature interactions (if applicable)
-- [ ] Full test suite passes
-- [ ] Rules updated if new patterns emerged
+- `docs/features/FEATURE-ID.md` updated with implementation reality
+- `docs/prd.md` feature table updated (status: "integrated")
+- Integration tests created for cross-feature interactions (if applicable)
+- Full test suite passes
+- Rules updated if new patterns emerged
+

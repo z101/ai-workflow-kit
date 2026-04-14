@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 # Phase: Embed Feature
 
+The user will provide a Feature ID (e.g., `user-auth`) identifying which feature to integrate.
+
 Read and follow the instructions in `.agents/phases/embed-feature.md`.
 
 Update `docs/features/FEATURE-ID.md` with implementation reality, then update `docs/prd.md` index.

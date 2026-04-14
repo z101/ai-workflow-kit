@@ -4,19 +4,19 @@
   "command": {
     "init-project": {
       "description": "Initialize project documentation through iterative Q&A",
-      "template": "{file:./.agents/phases/init-project.md}"
+      "template": "Project description: $ARGUMENTS\n\n{file:./.agents/phases/init-project.md}"
     },
     "plan-feature": {
-      "description": "Plan feature implementation with spec, tasks, and acceptance tests",
-      "template": "{file:./.agents/phases/plan-feature.md}"
+      "description": "Plan a feature: /plan-feature <feature-id or description>",
+      "template": "Feature request: $ARGUMENTS\n\n{file:./.agents/phases/plan-feature.md}"
     },
     "exec-feature": {
-      "description": "Implement feature following the plan until all tests pass",
-      "template": "{file:./.agents/phases/exec-feature.md}"
+      "description": "Implement a feature: /exec-feature <feature-id>",
+      "template": "Feature ID: $ARGUMENTS\n\n{file:./.agents/phases/exec-feature.md}"
     },
     "embed-feature": {
-      "description": "Integrate verified feature into project docs and codebase",
-      "template": "{file:./.agents/phases/embed-feature.md}"
+      "description": "Integrate a feature: /embed-feature <feature-id>",
+      "template": "Feature ID: $ARGUMENTS\n\n{file:./.agents/phases/embed-feature.md}"
     }
   }
 }

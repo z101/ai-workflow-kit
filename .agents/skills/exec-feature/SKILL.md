@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 # Phase: Execute Feature
 
+The user will provide a Feature ID (e.g., `user-auth`) identifying which feature to implement.
+
 Read and follow the instructions in `.agents/phases/exec-feature.md`.
 
 Read the feature document from `docs/features/FEATURE-ID.md` for the specification and implementation plan.

@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 # Phase: Init Project
 
+The user will provide an initial project description as their message. Use it as the starting point for the Q&A process.
+
 Read and follow the instructions in `.agents/phases/init-project.md`.
 
 Use `.agents/templates/prd.md` as the document structure template for generating `docs/prd.md`.

@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 # Phase: Plan Feature
 
+The user will provide a feature description or reference a feature from the PRD by name.
+
 Read and follow the instructions in `.agents/phases/plan-feature.md`.
 
 Use `.agents/templates/feature.md` as the document structure template for generating `docs/features/FEATURE-ID.md`.
